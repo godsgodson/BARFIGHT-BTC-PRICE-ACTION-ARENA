@@ -109,7 +109,7 @@ body.manual #gl{cursor:grab}
 #mini .mh{display:flex;align-items:baseline;gap:10px;padding:7px 12px 2px;font:500 9px var(--mono);letter-spacing:.18em;color:var(--mut)}
 #mini .mh b{color:var(--gold);font-weight:600}
 #mini #miniD{margin-left:auto}
-#mini .bigp{font:400 44px/1 var(--disp);padding:0 12px 4px;color:var(--ink)}
+#mini .bigp{font:400 26px/1 var(--disp);padding:2px 12px 4px;color:var(--ink)}
 #mini .bigp.up{color:var(--grn)} #mini .bigp.dn{color:var(--red)}
 #miniC{display:block;width:100%;height:44px}
 #tut{position:fixed;top:15vh;left:50%;transform:translateX(-50%);z-index:26;width:min(520px,92vw);
@@ -178,7 +178,7 @@ body.manual #gl{cursor:grab}
 #tests .th{font:600 11px var(--mono);letter-spacing:.24em;color:var(--ink);margin-bottom:10px}
 #tests .tr{font:400 10px/1.8 var(--mono);color:var(--mut);display:flex;gap:8px}
 #tests .tr b{flex:none;width:10px;font-weight:600}
-#tests .tr.ok b{color:var(--grn)} #tests .tr.bad b{color:var(--red)}
+#tests .tr.ok b{color:var(--grn)} #tests .tr.bad b{color:#ff5a4a}
 @media (max-width:1120px){.meters{display:none}}
 @media (max-width:1000px){.wm-sub{display:none}}
 @media (max-width:880px){#phaseTag{width:150px}.bl{display:none}.btn{padding:7px 8px}}
@@ -189,7 +189,7 @@ body.manual #gl{cursor:grab}
   .ov-title{font-size:clamp(64px,20vw,120px)}
   #countdown,#mini{bottom:64px}
   #mini{width:200px}
-  #mini .bigp{font-size:30px}
+  #mini .bigp{font-size:22px}
   #miniC{height:32px}
   #tut{top:10vh}
 }
@@ -255,7 +255,7 @@ body.manual #gl{cursor:grab}
   <div class="s" id="cardS"></div>
   <svg viewBox="0 0 120 26" preserveAspectRatio="none">
     <polyline id="cardPoly" fill="none" stroke="#ece7db" stroke-width="1" stroke-linejoin="round" opacity=".85" points=""/>
-    <circle id="cardDot" r="1.7" fill="#8b9096" cx="-9" cy="-9"/>
+    <circle id="cardDot" r="1.7" fill="#8b907c" cx="-9" cy="-9"/>
   </svg>
 </div>
 <div id="verdict"><div class="t" id="verdictT"></div><div class="s" id="verdictS"></div></div>
@@ -308,7 +308,7 @@ body.manual #gl{cursor:grab}
       <ul class="ov-notes">
         <li><b>GREEN CLOSE</b> bull takes the candle</li>
         <li><i>RED CLOSE</i> bear takes the candle</li>
-        <li><b>2-STREAK</b> finisher · <b>5-STREAK</b> rare finisher</li>
+        <li><b>2-STREAK</b> finisher · <b>5-STREAK</b> rare — then they rotate</li>
         <li><b>POWER 100</b> mid-bout special — hits, volume surges, whale prints</li>
         <li><b>DOJI</b> double KO, both fighters fall</li>
       </ul>
@@ -330,7 +330,7 @@ body.manual #gl{cursor:grab}
       </div>
       <div id="ovStatus">summoning the tape…</div>
       <button id="startBtn" class="start">OPEN THE ARENA — LIVE</button>
-      <div class="ov-foot">Engine: three.js via multi-CDN failover (drop a local three.min.js beside this file for full offline) · Candles: Kraken 1m → Coinbase · Fighting bar: 1s Coinbase spot · Flow: Kraken v2 WS → Coinbase WS → tick proxy · <a id="btnSelf">self-check</a> · <a id="btnTut">replay the 15s briefing</a></div>
+      <div class="ov-foot">Engine: three.js via multi-CDN failover (drop a local three.min.js beside this file for full offline) · Candles: Kraken 1m → Coinbase · Fighting bar: 1s Coinbase spot · Flow: Kraken v2 WS → Coinbase WS → tick proxy · Voice: ResponsiveVoice → system speech · <a id="btnSelf">self-check</a> · <a id="btnTut">replay the 15s briefing</a></div>
     </div>
   </div>
 </div>
@@ -385,6 +385,11 @@ body.manual #gl{cursor:grab}
       window.__bfBanner('3D ENGINE OFFLINE — three.js failed from every CDN. Download three.min.js (r128) and reference it locally in the loader chain.');
     if(window.__MAIN_READY&&window.__startApp)window.__startApp();
   });
+  loadChain([
+    'https://code.responsivevoice.org/responsivevoice.js?key=4YPYTi6v'
+  ],function(ok){
+    if(!ok){try{console.info('[SFX] responsivevoice unavailable — system speech fallback active');}catch(e){}}
+  });
 })();
 </script>
 <script>
@@ -393,21 +398,18 @@ body.manual #gl{cursor:grab}
    (tickBeat, pure/tested). Escalation is data-fed: hits/wick rejections charge
    POWER; volume surges → surge mode; live taker order flow (Kraken v2 WS →
    Coinbase WS → proxy) with whale detection. POWER 100 → STAMPEDE / MAUL
-   mid-bout special on a 45s cooldown. FINISHER LADDER (this revision — five
-   distinct tiers, every move visually unmistakable):
-     streak 1 → MOON LAUNCHER (uppercut launch) / LIQUIDATION (inverted
-                piledriver — bull flipped upside-down, driven head-first into
-                the pit floor)
-     streak 2 → ACME ROCKET (rocket strapped to the bear, fuse, ignition) /
-                THE RED ANVIL (giant red candle falls from the sky and
-                pancakes the bull)
-     streak 3 → DONKEY KICK (bull on all fours, double hind kick) / THE CUBS
-                (three bear cubs storm the ring and maul)
-     streak 4+→ rare: MELT-UP (hammer-throw hurl, meteor burn on re-entry) /
-                BLACK SWAN (blackout, bull plunged THROUGH the floor into the
-                void — a crack is all that remains)
-   Sweeps are now proper takedowns (trip → fall on back); slips no longer
-   slide sideways. ═════════════════════════════════════════════════════════ */
+   mid-bout special on a 45s cooldown. FINISHER LADDER:
+     streak 1 → MOON LAUNCHER / LIQUIDATION (welded inverted piledriver)
+     streak 2 → ACME ROCKET (hugged chest-first; bull straps, steps back,
+                celebrates) / THE RED ANVIL (giant red candle from the sky)
+     streak 3 → THE BULLSHOT (coiled double hind kick) / BEAR CLAW (three
+                raking dash-slashes with glowing claw-marks, overhead smash)
+     streak 4+→ rare: MELT-UP (welded hammer-throw, meteor re-entry burn) /
+                BLACK SWAN (blackout, plunged through the floor into the void)
+   After the ultimate, ALL finishers rotate, weighted by candle violence,
+   never repeating back-to-back. The arena floor AUTO-DROPS in extended bear
+   markets so the live candle is always fully visible. The ring announcer
+   speaks via ResponsiveVoice, falling back to system speech. ══════════════ */
 'use strict';
 const V3=(x,y,z)=>new THREE.Vector3(x,y,z);
 const W={spacing:2.4,candleW:1.8,candleD:1.6};
@@ -415,6 +417,7 @@ const FS=.92;
 const FOOT=.93;
 const CAM_MIN=2.8;
 const FALL_ZMAX=3;
+const FLOOR_DROP_MIN=-6;
 const WHALE={BTC:1.2,ETH:12,SOL:120};
 const MOVE_NAME={jab:'JAB',cross:'CROSS',hook:'HOOK',kick:'HIGH KICK',spin:'SPIN KICK',
   elbow:'SPIN ELBOW',superman:'SUPERMAN PUNCH',sweep:'LEG SWEEP',haymaker:'HAYMAKER',pushkick:'PUSH KICK'};
@@ -453,7 +456,89 @@ const world={t:0,ts:1,tsT:1,speed:1,skipBoost:1,paused:false,hits:0,rt:[],
   dip(s,realSec){this.tsT=s;this.rt.push({t:realSec,fn:()=>{this.tsT=1;}});}};
 const Dim={on(a){U.el('dimmer').style.opacity=a;},off(){U.el('dimmer').style.opacity=0;}};
 
-/* ── synthesized SFX + ring announcer ── */
+/* ── ring announcer — ResponsiveVoice, with system-speech fallback ── */
+const Voice={
+  _voice:null,_lastSay:0,_rvInit:false,_rvOK:null,
+  rvReady(){
+    if(typeof responsiveVoice==='undefined')return false;
+    try{
+      if(typeof responsiveVoice.init==='function'&&!this._rvInit){
+        responsiveVoice.init();
+        this._rvInit=true;
+      }
+      return typeof responsiveVoice.voiceSupport==='function'&&!!responsiveVoice.voiceSupport();
+    }catch(e){return false;}
+  },
+  engine(){
+    if(this.rvReady())return 'RESPONSIVEVOICE';
+    return ('speechSynthesis'in window)?'SYSTEM SPEECH':'NONE';
+  },
+  _pickVoice(){
+    if(!('speechSynthesis'in window))return null;
+    const voices=speechSynthesis.getVoices();
+    if(!voices.length)return null;
+    const PREFERRED=[
+      'Google UK English Male',
+      'Microsoft Guy Online (Natural) - English (United States)',
+      'Microsoft Ryan Online (Natural) - English (United Kingdom)',
+      'Microsoft Eric Online (Natural) - English (United States)',
+      'Microsoft Davis Online (Natural) - English (United States)',
+      'Microsoft Roger Online (Natural) - English (United States)',
+      'Daniel','Fred','Alex','Tom',
+      'Microsoft David Desktop - English (United States)',
+      'Microsoft Mark Desktop - English (United States)',
+      'David Desktop','Mark Desktop','Matthew','James','Guy'];
+    for(const name of PREFERRED){
+      const v=voices.find(x=>x.name===name);
+      if(v)return v;
+    }
+    const engMale=voices.find(x=>/^en/i.test(x.lang||'')&&/male|man|guy|david|mark|james|ryan|eric|roger|fred|alex/i.test(x.name||''));
+    if(engMale)return engMale;
+    const eng=voices.find(x=>/^en/i.test(x.lang||''));
+    return eng||voices[0];
+  },
+  warm(){
+    this.rvReady();
+    if('speechSynthesis'in window){
+      try{
+        try{speechSynthesis.onvoiceschanged=()=>{this._voice=this._pickVoice();};}catch(e){}
+        this._voice=this._pickVoice();
+        const u=new SpeechSynthesisUtterance(' ');
+        u.volume=0;
+        speechSynthesis.speak(u);
+      }catch(e){}
+    }
+  },
+  say(text){
+    const now=performance.now();
+    if(now-this._lastSay<650)return;
+    this._lastSay=now;
+    const t=String(text).slice(0,140);
+    if(this._rvOK!==false&&this.rvReady()){
+      try{
+        const self=this;
+        responsiveVoice.speak(t,'US English Male',{pitch:.8,rate:1,volume:.95,
+          onerror:function(){self._rvOK=false;}});
+        return;
+      }catch(e){this._rvOK=false;}
+    }
+    if('speechSynthesis'in window){
+      try{
+        const u=new SpeechSynthesisUtterance(t);
+        u.pitch=.8;u.rate=1;u.volume=.9;
+        if(!this._voice)this._voice=this._pickVoice();
+        if(this._voice)u.voice=this._voice;
+        speechSynthesis.speak(u);
+      }catch(e){}
+    }
+  },
+  stop(){
+    if(typeof responsiveVoice!=='undefined'){try{responsiveVoice.cancel();}catch(e){}}
+    if('speechSynthesis'in window){try{speechSynthesis.cancel();}catch(e){}}
+  }
+};
+
+/* ── synthesized SFX ── */
 const SFX={ctx:null,out:null,nb:null,muted:true,voiceOn:false,
   init(){
     if(this.ctx)return;
@@ -470,6 +555,7 @@ const SFX={ctx:null,out:null,nb:null,muted:true,voiceOn:false,
     const lg=this.ctx.createGain();lg.gain.value=.03;lfo.connect(lg);lg.connect(g.gain);lfo.start();
     s.connect(f);f.connect(g);g.connect(this.out);s.start();
     this.muted=false;
+    this.voiceWarm();
   },
   _noise(dur,o){if(!this.ctx||this.muted)return;o=o||{};
     const c=this.ctx,t=c.currentTime+(o.t0||0);
@@ -495,27 +581,32 @@ const SFX={ctx:null,out:null,nb:null,muted:true,voiceOn:false,
   ko(){this._tone('sine',90,32,.6,.6);this._noise(.4,{type:'lowpass',f0:300,f1:80,g:.4});this.bell();},
   death(){this._tone('sine',80,26,.7,.65);this._noise(.5,{type:'lowpass',f0:500,f1:60,g:.5});},
   setMuted(m){this.muted=m;if(this.out)this.out.gain.value=m?0:.75;},
+  voiceWarm(){Voice.warm();},
   say(t){
-    if(!this.voiceOn||!('speechSynthesis'in window))return;
-    try{
-      if(speechSynthesis.pending){try{speechSynthesis.cancel();}catch(e){}}
-      const u=new SpeechSynthesisUtterance(t);
-      u.rate=.95;u.pitch=.55;u.volume=1;
-      speechSynthesis.resume();
-      speechSynthesis.speak(u);
-    }catch(e){}
+    if(!this.voiceOn)return;
+    Voice.say(t);
   },
-  voiceAvailable(){return ('speechSynthesis'in window);},
+  voiceAvailable(){return Voice.engine()!=='NONE';},
   voiceToggle(on){
     this.voiceOn=on;
     if(on){
-      if(this.voiceAvailable()){this.say('Ladies and gentlemen — the announcer is live.');}
-      else Log.feed('UI','voice unavailable in this browser (no speech engine)');
-    }else if(this.voiceAvailable()){
-      try{speechSynthesis.cancel();}catch(e){}
+      Voice.warm();
+      const eng=Voice.engine();
+      if(eng==='NONE'){Log.feed('UI','voice unavailable — no engine in this browser');return;}
+      let extra='';
+      if(eng==='SYSTEM SPEECH'){
+        const n=speechSynthesis.getVoices().length;
+        extra=' — '+n+' system voice'+(n===1?'':'s')+' found';
+        if(n===0)extra+=' (add a TTS voice: Windows Settings → Speech, then reload)';
+      }
+      Log.feed('UI','ring announcer ON — engine: '+eng+extra);
+      this.say('Ladies and gentlemen, the announcer is live.');
+    }else{
+      Voice.stop();
+      Log.feed('UI','ring announcer OFF');
     }
   },
-  voiceStop(){if('speechSynthesis'in window){try{speechSynthesis.cancel();}catch(e){}}}
+  voiceStop(){Voice.stop();}
 };
 
 /* ── feed ── */
@@ -599,6 +690,13 @@ function niceTicks(lo,hi,n){
   const out=[];for(let t=Math.ceil(lo/step)*step;t<=hi+1e-9;t+=step)out.push(+t.toFixed(6));
   return out;
 }
+/* the floor-drop decision, pure and testable: returns the absolute target
+   depth (0 = no change needed) for the given live-bar bottom */
+function floorDropFor(liveBotY,floorY,minY){
+  const needed=liveBotY-.7;             // floor must sit at or below this
+  const target=Math.max(needed,minY);   // never past the minimum depth
+  return target<floorY?target:0;        // 0 = floor already deep enough
+}
 function tickBeat(d,base,o,newHi,newLo){
   const mag=Math.abs(d)/Math.max(base,Math.abs((o||1))*1e-5);
   const who=d>=0?'bull':'bear';
@@ -607,8 +705,24 @@ function tickBeat(d,base,o,newHi,newLo){
   return{kind:'strike',who:who,mag:mag};
 }
 function flowNet(b,s){const t=(b||0)+(s||0);return t>1e-12?U.clamp(((b||0)-(s||0))/t,-1,1):0;}
-/* five finisher tiers now: 1,2,3,4 + rare(5th win at streak 4) */
 function tierFor(streak){return streak>=4?4:streak>=3?3:streak>=2?2:streak>=1?1:0;}
+function pickFinisherTier(winner,c){
+  const s=Dir.streaks[winner];
+  if(s<1)return 0;
+  if(s<4)return tierFor(s);
+  const range=Math.max(c.h-c.l,1e-9);
+  const bodyFrac=Math.abs(c.cl-c.o)/range;
+  const rel=Math.abs(c.cl-c.o)/(c.o||1);
+  const viol=U.clamp(bodyFrac*.55+U.clamp(rel/0.005,0,1)*.45,0,1);
+  const w=[.6,1,1+viol,1+viol*1.5,1.2+viol*2];
+  let r=Math.random()*(w[0]+w[1]+w[2]+w[3]);
+  let tier=4;
+  for(let t=0;t<4;t++){if(r<w[t]){tier=t+1;break;}r-=w[t];}
+  if(tier===(Dir.lastFinTier||0))tier=tier===4?1:tier+1;
+  Dir.lastFinTier=tier;
+  Log.feed('DIR','violence '+viol.toFixed(2)+' → finisher tier '+tier);
+  return tier;
+}
 
 /* ── tween engine ── */
 const Tweens={list:[],
@@ -617,13 +731,29 @@ const Tweens={list:[],
   update(dt){
     const arr=this.list;this.list=[];
     for(const w of arr){
-      w.t+=dt;const k=U.clamp(w.t/w.dur,0,1);
-      try{w.fn(U.ease[w.ease](k));}catch(e){console.error(e);}
-      if(w.t>=w.dur){try{w.done&&w.done();}catch(e){console.error(e);}}
-      else this.list.push(w);
+      try{
+        w.t+=dt;const k=U.clamp(w.t/w.dur,0,1);
+        w.fn(U.ease[w.ease](k));
+        if(w.t>=w.dur){try{w.done&&w.done();}catch(e){console.error(e);}}
+        else this.list.push(w);
+      }catch(e){console.error(e);try{w.done&&w.done();}catch(e2){}}
     }
   }
 };
+/* per-frame hooks — push/update/clear, every callback individually guarded */
+const Extras={list:[],
+  push(e){this.list.push(e);},
+  update(dt){
+    const keep=[];
+    for(const e of this.list){
+      let alive=true;
+      try{e.life-=dt;if(e.life<=0)alive=false;else if(e.update(dt)===false)alive=false;}
+      catch(err){console.error(err);alive=false;}
+      if(alive)keep.push(e);
+    }
+    this.list=keep;
+  },
+  clear(){this.list.length=0;}};
 
 /* ── poses & clips ── */
 const P={
@@ -658,13 +788,11 @@ dodge:{torso:[-.35,0,.15],head:[-.1,0,.1],root:{y:-.05},kneeL:[.8,0,0],kneeR:[.8
 backflip1:{root:{y:-.05,rx:.4},torso:[.4,0,0],kneeL:[2,0,0],kneeR:[2,0,0],hipL:[-1.2,0,0],hipR:[-1.2,0,0]},
 backflip2:{root:{rx:2.4},torso:[.5,0,0],kneeL:[2.2,0,0],kneeR:[2.2,0,0],hipL:[-1.8,0,0],hipR:[-1.8,0,0],shL:[-2.2,0,-.4],shR:[-2.2,0,.4],head:[.3,0,0]},
 backflip3:{root:{rx:4.6,y:-.05},kneeL:[1.6,0,0],kneeR:[1.6,0,0],hipL:[-1,0,0],hipR:[-1,0,0],torso:[.3,0,0]},
-/* sweep victims: a proper takedown — windmill, then flat on his back with legs up */
-tripW:{torso:[-.6,0,0],head:[-.4,0,0],root:{y:-.05},shL:[-2.8,0,-.4],shR:[-2.8,0,.4],elL:[-.3,0,0],elR:[-.3,0,0],hipL:[-.3,0,0],kneeL:[.6,0,0],hipR:[-.3,0,0],kneeR:[.6,0,0]},
-tripD:{torso:[-1.35,0,0],head:[-.55,0,0],root:{y:-.05},shL:[-2.2,0,-.3],shR:[-2.2,0,.3],elL:[-.4,0,0],elR:[-.4,0,0],hipL:[-1.7,0,0],kneeL:[.7,0,0],hipR:[-1.7,0,0],kneeR:[.7,0,0]},
-/* donkey kick: bull on all fours, then the double hind kick */
+trippedW:{torso:[-.6,0,0],head:[-.4,0,0],root:{y:-.05},shL:[-2.8,0,-.4],shR:[-2.8,0,.4],elL:[-.3,0,0],elR:[-.3,0,0],hipL:[-.3,0,0],kneeL:[.6,0,0],hipR:[-.3,0,0],kneeR:[.6,0,0]},
+trippedD:{torso:[-1.35,0,0],head:[-.55,0,0],root:{y:-.05},shL:[-2.2,0,-.3],shR:[-2.2,0,.3],elL:[-.4,0,0],elR:[-.4,0,0],hipL:[-1.7,0,0],kneeL:[.7,0,0],hipR:[-1.7,0,0],kneeR:[.7,0,0]},
 fours:{root:{y:-.05},torso:[.9,0,0],head:[.5,0,0],shL:[-.2,0,-.08],elL:[-.1,0,0],shR:[-.2,0,.08],elR:[-.1,0,0],hipL:[-.9,.1,0],kneeL:[.9,0,0],hipR:[-.9,-.1,0],kneeR:[.9,0,0]},
-dkW:{root:{y:-.05},torso:[.75,0,0],head:[.45,0,0],shL:[-.2,0,-.05],elL:[-.1,0,0],shR:[-.2,0,.05],elR:[-.1,0,0],hipL:[-.5,.1,0],kneeL:[.3,0,0],hipR:[-.5,-.1,0],kneeR:[.3,0,0]},
-dkR:{root:{y:-.05,rx:-.3},torso:[.55,0,0],head:[.35,0,0],shL:[-.3,0,-.05],elL:[-.15,0,0],shR:[-.3,0,.05],elR:[-.15,0,0],hipL:[-2.6,.1,0],kneeL:[.15,0,0],hipR:[-2.6,-.1,0],kneeR:[.15,0,0]},
+bshotCoil:{root:{y:-.1},torso:[.82,0,0],head:[.5,0,0],shL:[-.18,0,-.05],elL:[-.1,0,0],shR:[-.18,0,.05],elR:[-.1,0,0],hipL:[-1.35,.12,0],kneeL:[1.5,0,0],hipR:[-1.35,-.12,0],kneeR:[1.5,0,0]},
+bshotKick:{root:{y:.14,rx:-.24},torso:[.55,0,0],head:[.3,0,0],shL:[-.26,0,-.05],elL:[-.1,0,0],shR:[-.26,0,.05],elR:[-.1,0,0],hipL:[-2.78,.08,0],kneeL:[.05,0,0],hipR:[-2.78,-.08,0],kneeR:[.05,0,0]},
 charge:{torso:[.75,0,0],head:[.4,0,0],root:{y:-.05},shL:[.6,0,-.4],shR:[.6,0,.4],elL:[-.3,0,0],elR:[-.3,0,0],kneeL:[1.6,0,0],kneeR:[1.6,0,0],hipL:[-1.1,.15,0],hipR:[-1.1,-.15,0]},
 grab:{torso:[.3,0,0],shL:[-1.55,0,-.15],elL:[-.15,0,0],shR:[-1.55,0,.15],elR:[-.15,0,0],head:[.15,0,0]},
 lift:{torso:[-.15,0,0],head:[-.3,0,0],shL:[-2.95,0,-.2],elL:[-.1,0,0],shR:[-2.95,0,.2],elR:[-.1,0,0]},
@@ -694,8 +822,8 @@ hitGut:{impact:.05,steps:[{p:'hitGut',d:.08,e:'out'},{p:'stance',d:.24}]},
 stagger:{steps:[{p:'stagger',d:.12},{p:'stance',d:.3}]},
 dodge:{steps:[{p:'dodge',d:.09},{p:'stance',d:.2}]},
 backflip:{steps:[{p:'backflip1',d:.1,e:'out'},{p:'backflip2',d:.22},{p:'backflip3',d:.13},{p:'stance',d:.16}]},
-tripped:{steps:[{p:'tripW',d:.1,e:'out'},{p:'tripD',d:.12,e:'out'},{p:'tripD',d:.9},{p:'stance',d:.35}]},
-donkey:{steps:[{p:'fours',d:.35},{p:'dkW',d:.08},{p:'dkR',d:.1,e:'out'},{p:'fours',d:.6},{p:'stance',d:.3}]},
+tripped:{steps:[{p:'trippedW',d:.1,e:'out'},{p:'trippedD',d:.12,e:'out'},{p:'trippedD',d:.9},{p:'stance',d:.35}]},
+bshot:{steps:[{p:'bshotCoil',d:.13,e:'out'},{p:'bshotKick',d:.07,e:'out'},{p:'bshotKick',d:.55}]},
 charge:{steps:[{p:'stance',d:.04},{p:'charge',d:.22,e:'out'},{p:'charge',d:9}]},
 grab:{steps:[{p:'grab',d:.14,e:'out'},{p:'grab',d:9}]},
 lift:{steps:[{p:'lift',d:.2,e:'out'},{p:'lift',d:9}]},
@@ -710,7 +838,6 @@ enter:{steps:[{p:'enter',d:99}]}
 
 /* ── 3D scene ── */
 let scene,renderer,spot,grid,floor;
-/* scene props spawned by finishers (cubs, anvils, cracks) — cleared on session reset */
 const Props={list:[],
   add(o){this.list.push(o);scene.add(o.root);},
   clear(){for(const o of this.list){try{scene.remove(o.root);}catch(e){}}this.list.length=0;}};
@@ -720,6 +847,32 @@ function disposeGroup(g){
     if(o.material){if(o.material.map)o.material.map.dispose();o.material.dispose();}
   });}catch(e){}
 }
+/* the sinking arena — the floor drops to keep the live candle fully visible */
+const Pit={
+  y:0,target:0,tweening:false,
+  ensure(liveBotY){
+    if(this.tweening)return;
+    const target=floorDropFor(liveBotY,this.y,FLOOR_DROP_MIN);
+    if(target!==0&&target<this.y-.01){
+      this.tweening=true;
+      const y0=this.y;
+      Log.feed('CHART','bear market — pit dropping to '+target.toFixed(1)+' to keep the live bar visible');
+      const self=this;
+      Tweens.run(u=>{
+        self.apply(U.lerp(y0,target,U.ease.inout(u)));
+      },1.6,'inout',()=>{self.tweening=false;});
+    }
+  },
+  apply(y){
+    this.y=y;
+    if(floor)floor.position.y=y;
+    if(grid)grid.position.y=y+.01;
+  },
+  reset(){
+    this.y=0;this.target=0;this.tweening=false;
+    this.apply(0);
+  }
+};
 
 /* ── FX ── */
 const FX={S:null,D:null,rings:[],
@@ -1149,7 +1302,7 @@ const Cam={
         if(zs.length)mz=(Math.min.apply(null,zs)+Math.max.apply(null,zs))/2;
       }
       this.tgtP.set(mx,cy+3.4,mz+10);
-      this.tgtL.set(mx,cy-.2,mz);
+      this.tgtL.set(mx+1.4,cy-.2,mz);
       this.fovT=46;
       this._chase(dt,2);
     }
@@ -1228,7 +1381,7 @@ function textSprite(txt,px,color){
   const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false}));
   sp.scale.set(c.width/64,c.height/64,1);return sp;
 }
-/* finisher props: ACME rocket, red-candle anvil, floor crack */
+/* finisher props */
 function buildRocket(){
   const g=new THREE.Group();
   const body=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,.55,8),MS({color:0xc23b2e,roughness:.5}));
@@ -1255,8 +1408,52 @@ function buildCrack(s){
   const g=new THREE.Group();g.add(m);
   return{root:g,mat:mat};
 }
+/* BEAR CLAW prop: three raking claw-marks, emissive red */
+function buildClawMark(){
+  const g=new THREE.Group();
+  const mat=new THREE.MeshBasicMaterial({color:0xff2a1a,transparent:true,opacity:.95,
+    blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide});
+  for(let k=0;k<3;k++){
+    const m=new THREE.Mesh(new THREE.BoxGeometry(.09,1.9,.02),mat);
+    m.position.set((k-1)*.27,0,0);
+    m.rotation.z=(k-1)*.16;
+    g.add(m);
+  }
+  return{root:g,mat:mat};
+}
+/* the live price marker — gold arrow on the right axis */
+const PriceTag={
+  cv:null,ctx:null,tex:null,spr:null,last:null,
+  init(){
+    this.cv=document.createElement('canvas');this.cv.width=300;this.cv.height=110;
+    this.ctx=this.cv.getContext('2d');
+    this.tex=new THREE.CanvasTexture(this.cv);this.tex.minFilter=THREE.LinearFilter;
+    this.spr=new THREE.Sprite(new THREE.SpriteMaterial({map:this.tex,transparent:true,depthWrite:false}));
+    this.spr.scale.set(4.5,1.65,1);this.spr.visible=false;
+    scene.add(this.spr);
+  },
+  update(price){
+    if(!this.spr||price==null||!isFinite(price)||!Chart.yM||!Chart.rounds.length)return;
+    if(this.last===price)return;
+    this.last=price;
+    const c=this.ctx;c.clearRect(0,0,300,110);
+    c.fillStyle='#d8a94e';
+    c.beginPath();c.moveTo(12,55);c.lineTo(34,40);c.lineTo(34,70);c.closePath();c.fill();
+    c.font='600 46px "IBM Plex Mono", monospace';
+    c.textAlign='left';c.textBaseline='middle';
+    c.shadowColor='rgba(0,0,0,.9)';c.shadowBlur=8;
+    c.fillText(U.fmt(price),46,57);
+    c.shadowBlur=0;
+    this.tex.needsUpdate=true;
+    const N=Chart.rounds.length;
+    const y=U.clamp(Chart.yM.y(price),0,15.6+(Pit.y<0?-Pit.y:0));
+    this.spr.position.set((N+1)*W.spacing+.9,y,0);
+    this.spr.visible=true;
+  },
+  hide(){if(this.spr)this.spr.visible=false;this.last=null;}
+};
 
-/* ── chart ── */
+/* ── chart — big price axis on the RIGHT, live marker arrow ── */
 const Chart={
   group:null,rounds:[],candles:[],yM:null,dom:null,pairLabel:'',avgVol:1,
   init(){this.group=new THREE.Group();scene.add(this.group);},
@@ -1283,18 +1480,19 @@ const Chart={
       const wick=new THREE.Mesh(new THREE.BoxGeometry(.15,Math.max(.06,yH-yL),.15),mat);
       wick.position.set(x,(yH+yL)/2,0);
       this.group.add(body);this.group.add(wick);
-      const cd={x:x,top:top,mat:mat,body:body,wick:wick,resolved:(resolvedDirs&&resolvedDirs[i])||0,state:'veil'};
+      const cd={x:x,top:top,bot:bot,mat:mat,body:body,wick:wick,resolved:(resolvedDirs&&resolvedDirs[i])||0,state:'veil'};
       this.candles.push(cd);
       if(cd.resolved)this._applyState(cd,cd.resolved>0?'grn':cd.resolved<0?'red':'flat');
     }
     const ticks=niceTicks(dom.lo,dom.hi,5),chartW=(N+2)*W.spacing;
+    const rightX=(N+2)*W.spacing+.8;
     for(const t of ticks){
       const y=yM.y(t);
       const line=new THREE.Mesh(new THREE.BoxGeometry(chartW+4,.02,.02),
         new THREE.MeshBasicMaterial({color:0x272c33,transparent:true,opacity:.55}));
       line.position.set(chartW/2,y,-W.candleD/2-.6);this.group.add(line);
-      const lab=textSprite(U.fmt(t),40,'#6f757e');
-      lab.position.set(-2.6,y,-W.candleD/2-.6);this.group.add(lab);
+      const lab=textSprite(U.fmt(t),46,'#9aa0a6');
+      lab.position.set(rightX,y,-W.candleD/2-.6);this.group.add(lab);
     }
     Cam.center.set(this.candleX(Math.max(0,N-1))-8,U.clamp(yM.y((dom.lo+dom.hi)/2),3,14),0);
     if(!Cam.seeded){Cam.seeded=true;Cam.cur.set(Cam.center.x-12,Cam.center.y+8,24);Cam.look.copy(Cam.center);}
@@ -1315,7 +1513,7 @@ const Chart={
 
 /* ── THE FORMING BAR — the ring itself ── */
 const LiveForm={
-  body:null,wick:null,mat:null,tag:null,x:0,topY:null,ready:false,
+  body:null,wick:null,mat:null,tag:null,x:0,topY:null,botY:null,ready:false,
   init(){
     this.mat=new THREE.MeshStandardMaterial({color:0xd8d2c4,emissive:0x8a744a,
       emissiveIntensity:.55,transparent:true,opacity:.92,roughness:.6});
@@ -1328,7 +1526,7 @@ const LiveForm={
   },
   hide(){if(!this.body)return;
     this.body.visible=this.wick.visible=this.tag.visible=false;
-    this.ready=false;this.topY=null;},
+    this.ready=false;this.topY=null;this.botY=null;},
   resetStage(){
     this.mat.color.setHex(0xd8d2c4);this.mat.emissive.setHex(0x8a744a);
     this.mat.emissiveIntensity=.55;this.mat.opacity=.92;
@@ -1341,11 +1539,13 @@ const LiveForm={
     const y=Chart.yM.y.bind(Chart.yM);
     const yO=y(F.o),yC=y(F.cl),yH=y(F.h),yL=y(F.l);
     const top=Math.max(yO,yC);let bot=Math.min(yO,yC);if(top-bot<.4)bot=top-.4;
-    this.topY=top;
+    this.topY=top;this.botY=bot;
     this.body.visible=this.wick.visible=this.tag.visible=true;
     this.body.scale.y=Math.max(.02,top-bot);this.body.position.set(this.x,(top+bot)/2,0);
     this.wick.scale.y=Math.max(.05,yH-yL);this.wick.position.set(this.x,(yH+yL)/2,0);
     Fighters.syncLiveStage();
+    PriceTag.update(F.cl);
+    Pit.ensure(Math.min(bot,yL-.3));   // bear market: sink the floor so the bar stays whole in view
     spot.position.set(this.x,top+10,6);
     spot.target.position.set(this.x,top,0);spot.target.updateMatrixWorld();
     Cam.center.set(this.x,top+1.2,0);
@@ -1651,7 +1851,7 @@ function liveStrike(spec,p){
     if(D.dead||A.dead)return;
     FX.spark(D.chest(),10+Math.round(12*pwr),A.colHex,5+5*pwr);
     SFX.hit(pwr);
-    if(move==='sweep'){D.play('tripped');D.vx=D.side*1.2;}   // proper takedown
+    if(move==='sweep'){D.play('tripped');D.vx=D.side*1.2;}
     else{D.play(Math.random()<.5?'hitHi':'hitGut');D.vx=D.side*(1.6+1.6*pwr);}
     world.hits++;Cam.shake(.12+.14*pwr);
     HUD.float(D.notice(),U.fmt(p),spec.who==='bull'?'up':'dn');
@@ -1684,7 +1884,7 @@ function liveFeint(spec){
   Dir.after(CLIPS.jab.impact,()=>{
     if(D.dead)return;
     D.play('dodge');
-    D.vx=D.side*.5;   // a slip, not a slide
+    D.vx=D.side*.5;
     if(Math.random()<.4)HUD.float(D.notice(),'MISS','blk');
   });
 }
@@ -2164,7 +2364,7 @@ function* tutSeq(){
   yield{t:5};
   Tut.candles(false);
   Tut.show(4,'STREAKS & POWER',
-    'Win streaks climb a ladder of finishers — <b>2-streak</b>, <b>3-streak</b>, <b>4-streak</b>, and at <b>5</b> the rare one. Hits, <b>volume surges</b> and <b>whale prints</b> fill the power meters — at 100, a mid-bout <b>special</b> fires.');
+    'Win streaks climb a ladder of finishers — <b>2-streak</b>, <b>3-streak</b>, <b>4-streak</b>, and at <b>5</b> the rare one. After that they all rotate, weighted by how violent the candle was. Hits, <b>volume surges</b> and <b>whale prints</b> fill the power meters — at 100, a mid-bout <b>special</b> fires.');
   U.el('lbB').classList.add('hl');
   Cam.cue(liveTransShot());
   yield{t:4.5};
@@ -2181,7 +2381,7 @@ function* tutSeq(){
 /* ── THE DIRECTOR ── */
 const Dir={
   state:'idle',seq:null,wait:0,waitR:0,waitReal:false,todo:[],
-  streaks:{bull:0,bear:0},finisherCount:0,bouts:0,carryWinner:null,
+  streaks:{bull:0,bear:0},finisherCount:0,bouts:0,carryWinner:null,lastFinTier:0,
   power:{bull:0,bear:0},specialRunning:false,specialCool:0,specialCount:0,
   run(gen){this.seq=gen;this._adv();},
   _adv(){
@@ -2297,9 +2497,9 @@ function* resolveSeq(c){
     Dir.carryWinner=null;
     yield{t:2.2};
   }else{
-    const tier=tierFor(Dir.streaks[winner]);
+    const tier=pickFinisherTier(winner,c);
     if(tier===4)yield*(winner==='bull'?meltUp():blackSwan());
-    else if(tier===3)yield*(winner==='bull'?donkeyKick():cubSquad());
+    else if(tier===3)yield*(winner==='bull'?bullshot():clawStorm());
     else if(tier===2)yield*(winner==='bull'?acmeRocket():redAnvil());
     else if(tier===1)yield*(winner==='bull'?moonLauncher():liquidation());
     else yield* finalBlow();
@@ -2326,30 +2526,55 @@ function nextBout(){
   LiveFight.adoptPending();
   Dir.startBout();
 }
+/* ── first win: flying superman punch, or spin kick on counter ── */
 function* finalBlow(){
   const sc=Round.sc,A=Fighters.get(sc.winner),D=Fighters.get(sc.loser);
   const cx=LiveForm.x||0,top=LiveForm.topY||6;
   HUD.phase('THE FINAL BLOW');
   D.play('stagger');
-  const off=-A.side*1.9;
-  Cam.cue({pos:()=>V3(cx+off,top+1.7,4.8),look:()=>V3((cx+D.x())/2,top+1.3,0),dur:.8,fov:38,hand:.7});
-  yield{t:.75};
-  A.play(sc.counter?'spin':'uppercut');SFX.whoosh();
-  const x0=A.x(),tx=D.x()+A.side*.65;
-  Tweens.run(u=>{A.root.position.x=U.lerp(x0,tx,u);},.18,'out');
-  world.dip(.25,.9);
-  Cam.cue(orbitShot(cx,top+1.5,3.8,1.2,48,.6));
-  yield{t:.22};
-  HUD.flash(.6);FX.spark(D.chest(),44,A.colHex,11);FX.ring(D.chest(),A.colHex,2.6,.45);
-  SFX.hit(1.8);Cam.shake(.7);
-  D.die(D.side*3.2,6.5,(Round.rng()<.5?5.5:-5.5));
-  HUD.float(D.notice(),U.fmt(Round.c.cl),(sc.winner==='bull'?'up':'dn')+' final');
+  const off=-A.side*2.2;
+  Cam.cue({pos:()=>V3(cx+off,top+1.6,5),look:()=>V3(midX(),top+1.3,0),dur:.7,fov:38,hand:.7});
+  yield{t:.7};
+  const counter=sc.counter;
+  if(counter){
+    A.play('spin');SFX.whoosh();
+    const x0=A.x(),tx=D.x()+A.side*.7;
+    Tweens.run(u=>{A.root.position.x=U.lerp(x0,tx,U.ease.in(u));},.2,'in');
+    world.dip(.25,.9);
+    Cam.cue(orbitShot(cx,top+1.5,3.9,1.2,46,.6));
+    yield{t:.24};
+  }else{
+    A.grounded=false;A.autoRot=false;
+    A.play('superman');SFX.whoosh();
+    const x0=A.x(),y0=A.root.position.y;
+    const tx=D.x()+A.side*.55;
+    world.dip(.4,.9);
+    Tweens.run(u=>{
+      A.root.position.x=U.lerp(x0,tx,U.ease.in(u));
+      A.root.position.y=U.lerp(y0,y0+.7,u)+Math.sin(Math.PI*u)*.55;
+      A.root.rotation.x=-.28*Math.sin(Math.PI*u);
+    },.42,'in');
+    Cam.cue(orbitShot(cx,top+1.4,4,1.2,46,.6));
+    yield{t:.42};
+  }
   world.tsT=1;
+  const hp=D.chest();
+  HUD.flash(.65);FX.spark(hp,52,A.colHex,12);FX.ring(hp,A.colHex,2.8,.45);
+  SFX.hit(2);Cam.shake(.85);
+  D.die(D.side*3.4,7.5,(Round.rng()<.5?5.5:-5.5));
+  HUD.float(hp,U.fmt(Round.c.cl),(sc.winner==='bull'?'up':'dn')+' final');
+  if(!counter){
+    A.grounded=true;A.autoRot=true;
+    A.baseY=slotTop(A.platform)+A.hipY;
+    A.root.rotation.x=0;
+    A.play('land');
+    FX.dust(V3(A.x(),A.root.position.y-.8,0),10);
+  }
   Cam.cue(fallShot(D,2));
   yield{t:1.6};
 }
 /* ═══ THE FINISHER LADDER — five tiers, every silhouette unmistakable ═══ */
-function* moonLauncher(){ // bull · streak 2 — a single uppercut, straight up, crater down
+function* moonLauncher(){
   const B=Fighters.bull,R=Fighters.bear;
   const cx=LiveForm.x||0,top=LiveForm.topY||6;
   Dir.finisherCount++;
@@ -2369,7 +2594,7 @@ function* moonLauncher(){ // bull · streak 2 — a single uppercut, straight up
   B.play('uppercut');
   HUD.flash(.85);FX.spark(R.chest(),70,B.colHex,14);FX.ring(R.chest(),B.colHex,3,.5);
   SFX.hit(2.2);Cam.shake(.9);
-  R.die(R.side*2,26,(Round.rng()<.5?3:-3));  // mostly vertical
+  R.die(R.side*2,26,(Round.rng()<.5?3:-3));
   HUD.float(R.notice(),U.fmt(Round.c.cl),'up final');
   const rx=R.x();
   Cam.cue({pos:()=>V3(rx-2.2,Math.max(3,R.root.position.y*.45+2),7),look:()=>R.chest(),dur:1.8,fov:32,hand:.4});
@@ -2378,88 +2603,114 @@ function* moonLauncher(){ // bull · streak 2 — a single uppercut, straight up
   Cam.cue({pos:()=>V3(R.x()-3.5,Math.max(3,R.root.position.y*.4+2.5),8),look:()=>R.root.position,dur:2,fov:46,hand:.8});
   yield{t:2};
 }
-function* liquidation(){ // bear · streak 2 — INVERTED PILEDRIVER, head-first into the pit
+function* liquidation(){
   const R=Fighters.bear,B=Fighters.bull;
   const top=LiveForm.topY||6;
   Dir.finisherCount++;
   HUD.moveCard('LIQUIDATION','BEAR FINISHER · 2 CANDLE STREAK','bear');
   SFX.riser();SFX.say('Liquidation!');
   FX.converge(R.chest(),R.colHex,46);
-  const rx=R.x();
-  Cam.cue({pos:()=>V3(rx+1.4,top+1.7,3.4),look:()=>R.chest(),dur:.9,fov:38,hand:.5});
-  yield{t:.9};
-  R.play('grab');B.play('held');B.grounded=false;B.autoRot=false;
-  const bx0=B.x();
-  Tweens.run(u=>{B.root.position.x=U.lerp(bx0,R.x()-R.side*.1,u);},.25,'out');
-  yield{t:.3};
-  // flip him upside down and hoist — beside the ring so the plunge hits the pit floor
-  const y0=B.root.position.y,yT=top+7;
-  world.dip(.3,1);SFX.whoosh();
-  R.grounded=false;R.autoRot=false;R.play('lift');
-  const px=R.x()+R.side*(W.candleW/2+1);
+  const rx0=R.x();
+  Cam.cue({pos:()=>V3(rx0+1.6,top+1.9,3.6),look:()=>R.chest(),dur:.85,fov:38,hand:.5});
+  yield{t:.85};
+  R.play('grab');B.play('held');
+  B.grounded=false;B.autoRot=false;R.grounded=false;R.autoRot=false;
+  R.rig.play({steps:[{p:'lift',d:.5,e:'out'},{p:'lift',d:9}]});
+  const y0=R.root.position.y,yT=top+2.8;
+  const px=rx0+R.side*(W.candleW/2+1.5);
+  SFX.whoosh();
   Tweens.run(u=>{
-    R.root.position.set(rx,U.lerp(y0,yT,u*.92),0);
-    B.root.position.set(U.lerp(R.x()-R.side*.1,px,u),U.lerp(y0,yT,u),0);
-    B.root.rotation.z=U.lerp(0,Math.PI,u);   // INVERTED — head pointing down
-  },.9,'out');
-  Cam.cue(pairFollowShot(R,B,1.4));
-  yield{t:1,real:true};
-  // the plunge
-  world.tsT=.15;SFX.whoosh();
-  const py=B.root.position.y;
-  Tweens.run(u=>{B.root.position.y=U.lerp(py,1.1,U.ease.in(u));},.34,'in');
-  yield{t:.34,real:true};
-  // impact — crater in the pit
+    const ry=U.lerp(y0,yT,U.ease.out(u));
+    R.root.position.set(U.lerp(rx0,rx0+R.side*.6,u),ry,0);
+    B.root.position.set(R.root.position.x,ry+1.55,0);
+    B.root.rotation.set(0,B.facing,Math.PI*u);
+  },.8,'out');
+  Cam.cue(pairFollowShot(R,B,1.5));
+  yield{t:.85};
+  world.dip(.3,.45);
+  yield{t:.3};
+  world.dip(.18,1.3);SFX.whoosh();
+  const pyR=R.root.position.y,pyB=B.root.position.y;
+  Tweens.run(u=>{
+    const k=U.ease.in(u);
+    R.root.position.y=U.lerp(pyR,top+R.hipY-.5,k);
+    B.root.position.set(R.root.position.x,U.lerp(pyB,1.05,k),0);
+  },.32,'lin');
+  yield{t:.34};
   world.tsT=1;
-  HUD.flash(.9);SFX.death();SFX.hit(2.4);Cam.shake(1.1);
-  FX.ring(V3(px,.06,0),R.colHex,4.6,.7);
-  FX.ring(V3(px,.06,0),R.colHex,3,.5);
-  FX.dust(V3(px,.3,0),28);FX.spark(V3(px,.8,0),44,R.colHex,10);
-  B.die(0,-2,0);
-  B.angv.set(0,0,0);B.root.rotation.z=Math.PI;
-  R.play('slam');
-  const ry1=R.root.position.y;
-  Tweens.run(u=>{R.root.position.y=U.lerp(ry1,top+R.hipY,U.ease.in(u));},.3,'in');
-  Cam.cue({pos:()=>V3(px-3.4,1.4,4.6),look:()=>V3(px,1,0),dur:1.8,fov:48,hand:1});
-  yield{t:1.8};
-  R.grounded=true;R.baseY=slotTop(R.platform)+R.hipY;R.autoRot=true;
+  const ix=R.root.position.x;
+  HUD.flash(.95);SFX.death();SFX.hit(2.5);Cam.shake(1.2);
+  FX.ring(V3(ix,.06,0),R.colHex,4.8,.7);
+  FX.ring(V3(ix,.06,0),R.colHex,3.2,.5);
+  FX.dust(V3(ix,.35,0),26);FX.spark(V3(ix,.9,0),40,R.colHex,10);
+  const crack=buildCrack(1.1);
+  crack.root.position.set(ix,.05,0);
+  scene.add(crack.root);Props.add(crack);
+  const cr=crack;
+  Tweens.run(u=>{cr.mat.opacity=.9*(1-u);},5,'lin',()=>{try{scene.remove(cr.root);disposeGroup(cr.root);}catch(e){}});
+  B.die(0,-1.5,0);
+  B.angv.set(0,0,0);
+  B.root.rotation.set(0,B.facing,Math.PI);
+  R.rig.play('slam');
+  yield{t:.7};
+  yield{t:.9};
+  R.autoRot=true;
+  const ry2=R.root.position.y,rx2=R.root.position.x;
+  const backX=LiveForm.x+R.side*.52;
+  Tweens.run(u=>{
+    R.root.position.set(U.lerp(rx2,backX,U.ease.out(u)),U.lerp(ry2,top+R.hipY,U.ease.out(u)),0);
+  },.55,'out');
+  SFX.whoosh();
+  Cam.cue({pos:()=>V3(ix-3.4,top+2,6),look:()=>V3(ix,1.2,0),dur:1.6,fov:48,hand:.8});
+  yield{t:1.2};
+  R.grounded=true;R.baseY=slotTop(R.platform)+R.hipY;
 }
-function* acmeRocket(){ // bull · streak 3 — rocket on the bear's back, fuse, ignition
+function* acmeRocket(){
   const B=Fighters.bull,R=Fighters.bear;
   const top=LiveForm.topY||6;
   Dir.finisherCount++;
   HUD.moveCard('ACME ROCKET','BULL FINISHER · 3 CANDLE STREAK','bull');
   SFX.riser();SFX.say('Acme rocket!');
   FX.converge(B.chest(),B.colHex,40);
-  Cam.cue(pairFollowShot(B,R,1.4,44));
+  Cam.cue(pairFollowShot(B,R,1.2,44));
   B.play('charge');
-  yield{t:.5};
+  const bx0=B.x(),tx=R.x()+B.side*.85;
+  Tweens.run(u=>{B.root.position.x=U.lerp(bx0,tx,U.ease.in(u));},.35,'in');
+  yield{t:.4};
+  B.play('grab');
   const rocket=buildRocket();
-  rocket.position.set(0,1.1,-.45);
+  rocket.position.set(0,1.05,.52);      // in FRONT of the bear's chest — he hugs it
+  rocket.rotation.x=Math.PI/2.3;
   R.root.add(rocket);
   R.play('stagger');
-  Log.feed('DIR','ACME rocket strapped to the bear');
+  R.root.rotation.y=R.facing;
+  Log.feed('DIR','ACME rocket strapped to the bear — he hugs it');
   yield{t:.6};
-  // the classic beat — fuse sparks, silence...
-  FX.converge(V3(R.x(),R.root.position.y+2,0),0xd8a94e,20);
+  B.rig.steps=null;   // release any pose hold — clean standing stance
+  const bx1=B.x();
+  const retreat=B.x()-B.side*1.7;
+  Tweens.run(u=>{B.root.position.x=U.lerp(bx1,retreat,U.ease.out(u));},.6,'out');
+  yield{t:.5};
+  FX.converge(V3(R.x(),R.root.position.y+2,0),0xd8a94e,18);
   SFX.block();
-  world.dip(.4,.8);
+  world.dip(.45,.8);
+  Cam.cue({pos:()=>V3(R.x()+2.2,R.root.position.y+2,5.5),look:()=>R.chest(),dur:1.4,fov:40,hand:.4});
   yield{t:.9,real:true};
-  // IGNITION
   world.tsT=1;
-  SFX.hit(2.2);SFX.whoosh();HUD.flash(.5);Cam.shake(.8);
+  SFX.hit(2.2);SFX.whoosh();HUD.flash(.5);Cam.shake(.85);
   const ry=R.root.position.y;
-  R.die(R.side*3,34,2.5);   // launched up and away with the rocket
+  R.die(R.side*2.5,30,2);
   FX.spark(V3(R.x(),ry+1,0),50,0xffb347,12);
-  Cam.cue({pos:()=>V3(R.x()-3,Math.max(4,R.root.position.y*.5+3),8),look:()=>R.chest(),dur:2.6,fov:34,hand:.4});
-  yield{t:.5,real:true};
-  // rocket pops off mid-flight
+  FX.ring(V3(R.x(),ry+.6,0),0xffb347,2.6,.5);
+  B.play('victory');
+  Cam.cue({pos:()=>V3(R.x()-3,Math.max(4,R.root.position.y*.5+3),8),look:()=>R.chest(),dur:2.4,fov:34,hand:.4});
+  yield{t:.45,real:true};
   try{R.root.remove(rocket);disposeGroup(rocket);}catch(e){}
-  FX.spark(R.chest(),24,0xd8a94e,8);
+  FX.spark(R.chest(),20,0xd8a94e,7);
   SFX.block();
-  yield{t:2.2};
+  yield{t:2};
 }
-function* redAnvil(){ // bear · streak 3 — a giant red candle drops from the sky
+function* redAnvil(){
   const R=Fighters.bear,B=Fighters.bull;
   const top=LiveForm.topY||6;
   Dir.finisherCount++;
@@ -2472,23 +2723,19 @@ function* redAnvil(){ // bear · streak 3 — a giant red candle drops from the 
   B.play('stagger');B.vx=B.side*2;
   yield{t:.6};
   Cam.cue({pos:()=>V3(bx-4.5,top+4,10),look:()=>V3(bx,top+2,0),dur:4,fov:44,hand:.5});
-  // the anvil materializes high above
   const anvil=buildAnvilCandle();
   anvil.root.position.set(bx,top+10,0);
   scene.add(anvil.root);Props.add(anvil);
   SFX.block();
   world.dip(.5,.9);
   yield{t:.8,real:true};
-  // the wobble — classic drop anticipation
   Tweens.run(u=>{anvil.root.rotation.z=Math.sin(u*14)*.16*(1-u);},.7,'out');
   yield{t:.7};
-  // the drop
   world.tsT=1;
   const ay0=anvil.root.position.y,ayT=top+1.4;
   Tweens.run(u=>{anvil.root.position.y=U.lerp(ay0,ayT,U.ease.in(u));},.32,'in');
   SFX.whoosh();
   yield{t:.32};
-  // SQUASH — cartoon pancake
   HUD.flash(.9);SFX.death();SFX.hit(2.4);Cam.shake(1.1);
   FX.ring(V3(bx,top+.1,0),R.colHex,4.2,.6);
   FX.dust(V3(bx,top-.4,0),24);
@@ -2500,110 +2747,113 @@ function* redAnvil(){ // bear · streak 3 — a giant red candle drops from the 
   Tweens.run(u=>{av.mat.opacity=1-u;},1.2,'out',()=>{try{scene.remove(av.root);disposeGroup(av.root);}catch(e){}});
   yield{t:1.2};
 }
-function* donkeyKick(){ // bull · streak 4 — wheels to all fours, double hind kick
+function* bullshot(){
   const B=Fighters.bull,R=Fighters.bear;
   const top=LiveForm.topY||6;
   Dir.finisherCount++;
-  HUD.moveCard('DONKEY KICK','BULL FINISHER · 4 CANDLE STREAK','bull');
-  SFX.riser();SFX.say('Donkey kick!');
+  HUD.moveCard('THE BULLSHOT','BULL FINISHER · 4 CANDLE STREAK','bull');
+  SFX.riser();SFX.say('The bullshot!');
   FX.converge(B.chest(),B.colHex,40);
-  Cam.cue(pairFollowShot(B,R,1.8,44));
-  // bull turns rear-to-the-bear and drops to all fours — the bait
+  Cam.cue(pairFollowShot(B,R,1.6,44));
   B.autoRot=false;
   const faceTo=B.facing+Math.PI;
-  Tweens.run(u=>{B.root.rotation.y=U.lerp(B.facing,faceTo,u);},.4,'inout');
-  B.play('donkey');
+  Tweens.run(u=>{B.root.rotation.y=U.lerp(B.facing,faceTo,U.ease.inout(u));},.4,'inout');
+  B.rig.play({steps:[{p:'fours',d:.45,e:'out'},{p:'fours',d:1.5}]});
   yield{t:.55};
-  // the bear charges the "helpless" bull
   R.play('charge');
-  const r0=R.x(),rt=B.x()+B.side*-.9;
-  Tweens.run(u=>{R.root.position.x=U.lerp(r0,rt,u);},.4,'in');
-  yield{t:.42};
-  // DOUBLE HIND KICK
-  B.rig.play('dkW',1.4);
-  SFX.whoosh();world.dip(.3,.5);
-  yield{t:.1};
-  B.rig.play('dkR',1.4);
-  Tweens.run(u=>{B.root.rotation.x=-.3*Math.sin(Math.PI*u);},.24,'out');
-  yield{t:.1};
-  const hp=R.chest();
-  HUD.flash(.8);FX.spark(hp,60,B.colHex,13);FX.ring(hp,B.colHex,3.2,.5);
+  const r0=R.x(),rt=B.x()-B.side*1.0;
+  Tweens.run(u=>{R.root.position.x=U.lerp(r0,rt,U.ease.in(u));},.42,'in');
+  SFX.whoosh();
+  yield{t:.44};
+  B.rig.play('bshot',1.15);
+  SFX.whoosh();
+  yield{t:.17};
+  const dir=-B.side;
+  const hp=V3(B.x()+dir*1.05,B.root.position.y+1.0,0);
+  world.dip(.3,.5);
+  HUD.flash(.85);FX.spark(hp,64,B.colHex,13);FX.ring(hp,B.colHex,3.2,.5);
+  FX.dust(V3(B.x()+dir*.7,B.root.position.y-.7,0),10);
   SFX.hit(2.3);Cam.shake(1);
-  R.die(-B.side*9,20,3);   // launched up and over the bull
+  R.die(dir*10,21,3);
   HUD.float(hp,U.fmt(Round.c.cl),'up final');
-  Cam.cue({pos:()=>V3(R.x()-B.side*3,Math.max(4,R.root.position.y*.5+3),8),look:()=>R.chest(),dur:2.2,fov:36,hand:.4});
-  yield{t:.6,real:true};
+  yield{t:.18};
   world.tsT=1;
-  Cam.cue({pos:()=>V3(R.x()-B.side*4,Math.max(3,R.root.position.y*.4+2.5),9),look:()=>R.root.position,dur:2.2,fov:46,hand:.8});
+  const bx1=B.x();
+  Tweens.run(u=>{B.root.position.x=U.lerp(bx1,bx1-dir*.55,u);},.3,'out');
+  Cam.cue({pos:()=>V3(B.x()+dir*3.2,Math.max(4,R.root.position.y*.5+3),7),look:()=>R.chest(),dur:2.4,fov:36,hand:.4});
+  yield{t:.6};
+  Cam.cue({pos:()=>V3(R.x()+dir*4,Math.max(3,R.root.position.y*.4+2.5),9),look:()=>R.root.position,dur:2.2,fov:46,hand:.8});
   yield{t:2.2};
   B.root.rotation.set(0,B.facing,0);
   B.autoRot=true;
 }
-function* cubSquad(){ // bear · streak 4 — three cubs storm the ring
+/* ── BEAR CLAW — bear · streak 3: three raking dash-slashes, overhead smash ── */
+function* clawStorm(){
   const R=Fighters.bear,B=Fighters.bull;
-  const top=LiveForm.topY||6;
   Dir.finisherCount++;
-  HUD.moveCard('THE CUBS','BEAR FINISHER · 4 CANDLE STREAK','bear');
-  SFX.riser();SFX.say('Release the cubs!');
+  HUD.moveCard('BEAR CLAW','BEAR FINISHER · 4 CANDLE STREAK','bear');
+  SFX.riser();SFX.say('Bear claw!');
   FX.converge(R.chest(),R.colHex,40);
-  Cam.cue(pairFollowShot(B,R,1.4,44));
-  R.play('victory');
-  yield{t:.6};
-  // three cubs sprint in from the wings
-  const cx0=midX();
-  const cubs=[];
+  Cam.cue(pairFollowShot(B,R,4.4,46));
+  R.play('grab');
+  yield{t:.5};
+  const marks=[];
   for(let k=0;k<3;k++){
-    const cub=buildBearBody();
-    cub.root.scale.setScalar(.45*FS);
-    cub.root.position.set(cx0+(k-1)*7,top+.42,(k-1)*1.6);
-    scene.add(cub.root);Props.add(cub);
-    cubs.push({b:cub,tx:cx0+(k-1)*.55});
-  }
-  SFX.whoosh();SFX.bell();
-  Log.feed('DIR','three cubs enter the ring');
-  for(const c of cubs){
-    const x0=c.b.root.position.x;
-    Tweens.run(u=>{
-      c.b.root.position.x=U.lerp(x0,c.tx,U.ease.in(u));
-      c.b.root.position.y=top+.42+.35*Math.abs(Math.sin(u*Math.PI*3));  // scampering hops
-    },.7,'in');
-  }
-  yield{t:.75};
-  // the mauling — bull staggers under the pile
-  Cam.cue({pos:()=>V3(cx0-3,top+2.2,5.5),look:()=>V3(cx0,top+1.2,0),dur:3,fov:46,hand:.9});
-  world.dip(.35,1);
-  for(let k=0;k<6;k++){
-    B.play(k%2?'hitGut':'hitHi');
-    B.vx=B.side*(1.2+Math.random());
-    const mp=V3(B.x()+(Math.random()-.5)*.8,B.root.position.y+.3+Math.random()*.8,(Math.random()-.5)*.6);
-    FX.spark(mp,16,0xff6a58,6);
-    SFX.hit(1.1);Cam.shake(.3);
+    const s=(k%2===0)?-1:1;
+    const xa=B.x()+s*2.1,xb=B.x()-s*.9;
+    R.root.position.x=xa;
+    R.facing=(R.x()<B.x())?Math.PI/2:-Math.PI/2;
+    R.play(k%2?'haymaker':'hook');
+    SFX.whoosh();
+    FX.dust(V3(xa,R.root.position.y-.7,0),5);
+    Tweens.run(u=>{R.root.position.x=U.lerp(xa,xb,U.ease.inout(u));},.26,'inout');
+    yield{t:.24};
+    const hp=B.chest();
+    const mark=buildClawMark();
+    mark.root.position.set(hp.x,hp.y,.55);
+    mark.root.rotation.z=(s>0?1:-1)*(.55+(k-1)*.18);
+    scene.add(mark.root);Props.add(mark);
+    marks.push(mark);
+    Tweens.run(u=>{const sc=U.lerp(.4,1.3,U.ease.out(u));mark.root.scale.set(sc,sc,1);},.2,'out');
+    FX.spark(hp,26,0xff2a1a,8);
+    SFX.hit(1.4+k*.2);
+    B.play(k%2?'hitHi':'hitGut');
+    B.vx=s*-(1.6+k*.4);
+    Cam.shake(.3+k*.12);
     world.hits++;
-    yield{t:.3};
+    yield{t:.34};
   }
-  // dragged down
-  B.die(B.side*1.5,2,0);
-  SFX.death();HUD.flash(.4);Cam.shake(.6);
-  FX.dust(V3(B.x(),top-.4,0),18);
-  for(const c of cubs){
-    const x1=c.b.root.position.x;
-    Tweens.run(u=>{c.b.root.position.x=U.lerp(x1,B.x()+ (c.tx-cx0),U.ease.out(u));},.3,'out');
-  }
-  yield{t:.6};
-  FX.spark(B.chest(),20,0xff6a58,5);SFX.hit(1.4);
-  yield{t:.8};
-  // cubs scatter
-  for(const c of cubs){
-    const x1=c.b.root.position.x,dir=(x1>=cx0?1:-1);
-    const cub=c;
-    Tweens.run(u=>{cub.b.root.position.x=U.lerp(x1,x1+dir*8,U.ease.in(u));},.6,'in',()=>{
-      try{scene.remove(cub.b.root);disposeGroup(cub.b.root);}catch(e){}
+  for(const mk of marks){
+    Tweens.run(u=>{mk.mat.opacity=.95*(1-u);},.9,'out',()=>{
+      try{scene.remove(mk.root);disposeGroup(mk.root);}catch(e){}
     });
   }
-  SFX.whoosh();
-  yield{t:.7};
+  R.play('charge');
+  yield{t:.35};
+  R.grounded=false;R.autoRot=false;
+  R.facing=-Math.PI/2;
+  const y0=R.root.position.y,x0=R.x();
+  const tx=B.x()+.45;
+  world.dip(.5,.5);SFX.whoosh();
+  Tweens.run(u=>{
+    R.root.position.x=U.lerp(x0,tx,U.ease.inout(u));
+    R.root.position.y=U.lerp(y0,y0+2.7,Math.sin(Math.PI*u));
+  },.62,'inout');
+  yield{t:.58};
+  R.play('slam');
+  yield{t:.15};
+  const hp2=B.chest();
+  HUD.flash(.85);FX.spark(hp2,60,R.colHex,12);FX.ring(hp2,R.colHex,3,.5);
+  SFX.hit(2.3);Cam.shake(1);
+  B.die(-6,9,(Round.rng()<.5?4:-4));
+  HUD.float(hp2,U.fmt(Round.c.cl),'dn final');
+  R.grounded=true;R.autoRot=true;
+  R.baseY=slotTop(R.platform)+R.hipY;
+  R.root.position.y=R.baseY;
+  Cam.cue(fallShot(B,2));
+  yield{t:1.8};
 }
-function* meltUp(){ // bull · streak 5 — HAMMER THROW, meteor burn on re-entry
+function* meltUp(){
   const B=Fighters.bull,R=Fighters.bear;
   const top=LiveForm.topY||6;
   Dir.finisherCount++;
@@ -2611,41 +2861,58 @@ function* meltUp(){ // bull · streak 5 — HAMMER THROW, meteor burn on re-entr
   SFX.riser();SFX.say('Melt up!');
   FX.converge(B.chest(),B.colHex,70);
   const bx=B.x();
-  Cam.cue({pos:()=>V3(bx-1.6,top+1.9,3.6),look:()=>B.chest(),dur:1,fov:38,hand:.4});
-  yield{t:.95};
+  Cam.cue({pos:()=>V3(bx-1.8,top+2.1,3.8),look:()=>B.chest(),dur:.9,fov:38,hand:.4});
+  yield{t:.9};
   B.play('grab');R.play('held');R.grounded=false;R.autoRot=false;
   const r0=R.x();
-  Tweens.run(u=>{R.root.position.x=U.lerp(r0,bx+B.side*.5,u);},.25,'out');
+  Tweens.run(u=>{R.root.position.x=U.lerp(r0,bx+B.side*.6,u);},.25,'out');
   yield{t:.3};
-  // the hammer throw — two accelerating spins
   world.dip(.4,1.4);SFX.whoosh();
-  const cy=top+2;
-  Cam.cue(orbitShot(bx,cy,4.2,1.6,42,.5));
+  const cy=top+1.7;
+  Cam.cue(orbitShot(bx,cy,5,2,42,.6));
+  B.autoRot=false;
+  const spin={t:0};
+  Extras.push({life:2.8,update:(dt)=>{
+    if(spin.t>=1.2)return false;
+    const ang=spin.t*Math.PI*4.6;
+    const rad=U.lerp(1.1,2.6,U.ease.in(spin.t));
+    FX.spark(V3(bx+Math.sin(ang)*rad,cy+.3*Math.sin(spin.t*6),Math.cos(ang)*rad),2,0xd8a94e,2);
+    return true;
+  }});
   Tweens.run(u=>{
-    const ang=u*Math.PI*4.2;
-    const rad=U.lerp(1,2.3,U.ease.in(u));
+    spin.t=u;
+    const ang=u*Math.PI*4.6;
+    const rad=U.lerp(1.1,2.6,U.ease.in(u));
     R.root.position.set(bx+Math.sin(ang)*rad,cy+.3*Math.sin(u*6),Math.cos(ang)*rad);
-    R.root.rotation.y=ang*2;
-  },1.2,'in');
-  yield{t:1.2};
-  // RELEASE — hurled into the sky
-  const rvx=Math.sin(Math.PI*4.2)*14,rvz=Math.cos(Math.PI*4.2)*14;
-  HUD.flash(.9);FX.ring(R.chest(),B.colHex,3.4,.5);
-  SFX.hit(2.4);Cam.shake(1);
-  R.die(rvx,46,rvz);
+    R.root.rotation.y=ang;
+    B.root.rotation.y=ang;
+    B.root.position.y=top+B.hipY-.15;
+  },1.25,'in');
+  yield{t:1.25};
+  world.tsT=1;
+  HUD.flash(.95);
+  FX.ring(V3(bx,cy,0),B.colHex,3.6,.55);
+  SFX.hit(2.5);SFX.whoosh();Cam.shake(1);
+  R.die(B.side*1.5,44,(Round.rng()<.5?2:-2));
+  R.angv.set(.4,7,.3);
   HUD.float(R.chest(),U.fmt(Round.c.cl),'up final');
   SFX.say('To the moon!');
+  B.root.rotation.y=B.facing;B.autoRot=true;
   const rx=R.x();
-  Cam.cue({pos:()=>V3(rx-2.5,Math.max(4,R.root.position.y*.5+3),8),look:()=>R.chest(),dur:2.6,fov:30,hand:.3});
+  Cam.cue({pos:()=>V3(rx-2.6,Math.max(4,R.root.position.y*.5+3),8),look:()=>R.chest(),dur:2.6,fov:30,hand:.3});
   yield{t:1,real:true};
-  // re-entry burn — meteor
-  world.tsT=1;
-  for(let k=0;k<22;k++)Dir.after(.13*k,()=>{if(R.dead&&R.root.visible)FX.spark(R.chest(),2,0xffb347,2.5);});
   SFX.riser();
-  Cam.cue({pos:()=>V3(R.x()-4,Math.max(3,R.root.position.y*.4+3),10),look:()=>R.root.position,dur:2.8,fov:44,hand:.7});
-  yield{t:2.8};
+  Extras.push({life:2.6,update:(dt)=>{
+    if(R.dead&&R.root.visible){
+      FX.spark(R.chest(),2,0xffb347,3);
+      FX.spark(R.chest(),1,0xff5a1e,2);
+    }
+    return R.dead&&R.root.visible;
+  }});
+  Cam.cue({pos:()=>V3(R.x()-4,Math.max(3,R.root.position.y*.4+3),10),look:()=>R.root.position,dur:2.6,fov:44,hand:.7});
+  yield{t:2.6};
 }
-function* blackSwan(){ // bear · streak 5 — blackout, plunge THROUGH the floor into the void
+function* blackSwan(){
   const R=Fighters.bear,B=Fighters.bull;
   const top=LiveForm.topY||6;
   Dir.finisherCount++;
@@ -2654,16 +2921,15 @@ function* blackSwan(){ // bear · streak 5 — blackout, plunge THROUGH the floo
   Dim.on(.8);
   FX.converge(R.chest(),R.colHex,60);
   const rx=R.x();
-  Cam.cue({pos:()=>V3(rx+1.5,top+2,3.6),look:()=>R.chest(),dur:1,fov:38,hand:.4});
+  Cam.cue({pos:()=>V3(rx+1.5,top+2,3.6),look:()=>R.chest(),dur:.95,fov:38,hand:.4});
   yield{t:.95};
   R.play('grab');B.play('held');B.grounded=false;B.autoRot=false;
   const bx0=B.x();
   Tweens.run(u=>{B.root.position.x=U.lerp(bx0,R.x()-R.side*.1,u);},.25,'out');
   yield{t:.35};
-  // hoisted overhead — slow, ritual
   R.grounded=false;R.autoRot=false;R.play('lift');
   const y0=B.root.position.y,yT=top+8;
-  world.dip(.35,1.6);SFX.whoosh();
+  world.dip(.35,1.5);SFX.whoosh();
   const px=R.x()+R.side*(W.candleW/2+1);
   Tweens.run(u=>{
     R.root.position.set(rx,U.lerp(y0,yT,u*.92),0);
@@ -2671,21 +2937,17 @@ function* blackSwan(){ // bear · streak 5 — blackout, plunge THROUGH the floo
   },1,'out');
   Cam.cue(pairFollowShot(R,B,1.7));
   yield{t:1.1,real:true};
-  // total blackout beat
   Dim.on(1);
   yield{t:.18,real:true};
-  // THE PLUNGE — straight down, through the floor, into the void
   Dim.on(.75);
-  world.tsT=.6;
+  world.dip(.25,1.4);SFX.whoosh();
   const py=B.root.position.y;
-  SFX.whoosh();
   Tweens.run(u=>{B.root.position.y=U.lerp(py,-3.5,U.ease.in(u));},.5,'in');
-  yield{t:.5,real:true};
-  // swallowed — flash, crack, sub-bass
+  yield{t:.55};
   world.tsT=1;
   HUD.flash(1);SFX.death();Cam.shake(1.2);
   B.die(0,-3,0);
-  B.root.visible=false;   // he is gone
+  B.root.visible=false;
   const crack=buildCrack(1.3);
   crack.root.position.set(px,.04,0);
   scene.add(crack.root);Props.add(crack);
@@ -2723,6 +2985,7 @@ const App={started:false,sessionStarting:false,pair:'BTC',histN:40,
     const rows=res.rows,dirs=rows.map(c=>Math.sign(c.cl-c.o)||0);
     Chart.build(rows,dirs,ASSETS[this.pair].cb);
     LiveForm.resetStage();
+    Pit.reset();
     LiveFight.seed(res.forming,rows);
     U.el('pairTag').textContent=ASSETS[this.pair].cb;
     U.el('miniPair').textContent=this.pair;
@@ -2772,8 +3035,9 @@ const App={started:false,sessionStarting:false,pair:'BTC',histN:40,
     Share.close();
     SFX.voiceStop();
     Props.clear();
+    Extras.clear();
     Dir.seq=null;Dir.todo.length=0;Dir.state='idle';
-    Dir.streaks.bull=0;Dir.streaks.bear=0;Dir.finisherCount=0;
+    Dir.streaks.bull=0;Dir.streaks.bear=0;Dir.finisherCount=0;Dir.lastFinTier=0;
     Dir.bouts=0;Dir.carryWinner=null;Dir.specialRunning=false;
     Dir.specialCool=0;Dir.power.bull=0;Dir.power.bear=0;
     world.paused=false;world.ts=1;world.tsT=1;world.skipBoost=1;
@@ -2782,7 +3046,7 @@ const App={started:false,sessionStarting:false,pair:'BTC',histN:40,
     LiveFight.t0=null;LiveFight.active=false;LiveFight.resolving=false;LiveFight.pend=null;
     LiveFight.path.length=0;LiveFight.surge=0;LiveFight.idleT=0;
     Tweens.clear();Cam.clear();Cam.manual=false;Cam.mode='attract';
-    Fighters.reset();LiveForm.hide();HUD.hideAll();HUD.power();Dim.off();
+    Fighters.reset();LiveForm.hide();PriceTag.hide();HUD.hideAll();HUD.power();Dim.off();
     document.body.classList.remove('manual');
     U.el('btnPause').classList.remove('on');U.el('camLbl').textContent='AUTO CAM';
   }
@@ -2819,7 +3083,7 @@ function wireUI(){
   document.querySelectorAll('#segMkt .segbtn').forEach(b=>b.addEventListener('click',()=>{
     document.querySelectorAll('#segMkt .segbtn').forEach(x=>x.classList.remove('on'));
     b.classList.add('on');App.pair=b.dataset.k;
-    Mini.reset();LiveForm.hide();Flow.retarget();
+    Mini.reset();LiveForm.hide();PriceTag.hide();Flow.retarget();
     U.el('miniSrc').textContent='1S TAPE · '+MiniPoll.lineSrc.toUpperCase();
     Log.feed('UI','market → '+ASSETS[App.pair].cb);App.loadTape();
   }));
@@ -2836,7 +3100,6 @@ function wireUI(){
   const voice=()=>{
     SFX.voiceToggle(!SFX.voiceOn);
     U.el('btnVoice').classList.toggle('on',SFX.voiceOn);
-    Log.feed('UI','ring announcer '+(SFX.voiceOn?'ON — he speaks rounds, verdicts, finishers, whales':'OFF'));
   };
   const tests=()=>U.el('tests').classList.toggle('open');
   const stats=()=>{const s=U.el('summary');
@@ -2901,6 +3164,7 @@ function frame(now){
     Fighters.update(sdt);
     Tweens.update(sdt);
     FX.update(sdt);
+    Extras.update(sdt);
     Chart.update();
     LiveForm.update();
     RingStage.update();
@@ -2959,6 +3223,35 @@ const Tests={run(){
   asrt('finisher ladder (tiers 1-4, rare at 5th win)',()=>{
     eq(tierFor(0),0);eq(tierFor(1),1);eq(tierFor(2),2);eq(tierFor(3),3);
     eq(tierFor(4),4);eq(tierFor(9),4);});
+  asrt('post-ultimate rotation (violence-weighted, no repeat)',()=>{
+    const rng=U.rng(7);
+    Dir.streaks.bull=5;
+    let last=0;const seen={};
+    for(let i=0;i<60;i++){
+      const c={t:i,o:100,h:100+Math.abs(rng())*2+1,l:99-Math.abs(rng())*2,cl:100+(rng()-.5)*3,v:1};
+      const t=pickFinisherTier('bull',c);
+      ok(t>=1&&t<=4,'tier in 1..4');
+      if(i>0)ok(t!==last,'no immediate repeat');
+      seen[t]=1;last=t;
+    }
+    ok(Object.keys(seen).length>=2,'variety over 60 picks');
+    Dir.streaks.bull=0;Dir.lastFinTier=0;});
+  asrt('floor drop math (bear-market pit)',()=>{
+    eq(floorDropFor(2.5,0,-6),0,'clear bar — no drop');
+    eq(floorDropFor(0.8,0,-6),0,'normal-height bar — no drop');
+    eq(floorDropFor(-1,0,-6),-1.7,'sinks to bar bottom minus clearance');
+    eq(floorDropFor(-10,0,-6),-6,'clamps at the minimum depth');
+    eq(floorDropFor(-1.2,-3,-6),0,'floor already deeper — no change');
+    eq(floorDropFor(-2,-1,-6),-2.7,'recomputed from a dropped floor');
+    ok(floorDropFor(-.8,0,-6)<0,'shallow bar near the floor drops');});
+  asrt('voice engine reports a known mode',()=>{
+    ok(['RESPONSIVEVOICE','SYSTEM SPEECH','NONE'].indexOf(Voice.engine())>=0,'known engine');
+    ok(typeof Voice.say==='function','say exists');
+    ok(typeof Voice.stop==='function','stop exists');});
+  asrt('Extras has push/update/clear',()=>{
+    ok(typeof Extras.push==='function','push exists');
+    ok(typeof Extras.update==='function','update exists');
+    ok(typeof Extras.clear==='function','clear exists');});
   asrt('price map monotonic+bounded',()=>{
     const cs=[{o:100,h:112,l:98,cl:108,v:1},{o:108,h:110,l:100,cl:101,v:1}];
     const dom=priceDomain(cs),m=makeYMap(dom,15);
@@ -2999,7 +3292,7 @@ window.__startApp=function(){
   }
   try{
     initGL();Cam.init();FX.init();Chart.init();LiveForm.init();
-    RingStage.init();ClipCaption.init();
+    RingStage.init();ClipCaption.init();PriceTag.init();
     Fighters.init();HUD.init();Mini.init();
     wireUI();
     const tr=Tests.run();
